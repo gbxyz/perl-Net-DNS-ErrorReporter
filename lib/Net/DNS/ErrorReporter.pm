@@ -49,15 +49,18 @@ $VERSION = '0.01';
 
 =head1 SYNOPSIS
 
+    use Net::DNS;
     use Net::DNS::ErrorReporter;
 
-    my $resolver = Net::DNS::Resolver->new;
+    my $resolver = Net::DNS::Resolver->new(
+        nameservers => \@some_authority_servers,
+    );
 
-    my $reporter = Net::DNS::ErrorReporter->new;
-
-    my $answer = $resolver->send('perl.org', 'HINFO');
+    my $answer = $resolver->send('example.org', 'HINFO');
 
     if (!do_some_checks_on($answer)) {
+        my $reporter = Net::DNS::ErrorReporter->new;
+
         $reporter->report(
             packet  => $answer,
             error   => Net::DNS::ErrorReporter::SOME_ERROR_CODE,
